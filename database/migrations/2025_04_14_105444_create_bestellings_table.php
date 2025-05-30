@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('Customer_id')->constrained('customers')->onDelete('cascade');
-            $table->date('datum');
+            $table->datetime('datum');
             $table->enum('status', ['Initieel', 'Betaald', 'Bereiden', 'InOven', 'Onderweg', 'Bezorgd']);
             $table->timestamps();
         });

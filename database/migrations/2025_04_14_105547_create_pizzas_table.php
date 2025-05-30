@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('pizzas', function (Blueprint $table) {
             $table->id();
             $table->string('naam');
+            $table->decimal('prijs', 8, 2)->default(0.00);
+            $table->enum('afmeting', ['Klein', 'Normaal', 'Groot']);
             $table->timestamps();
         });
     }

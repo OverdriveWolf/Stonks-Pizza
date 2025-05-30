@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pizza_id')->constrained('pizzas')->onDelete('cascade');
             $table->foreignId('ingredient_id')->constrained('ingredients')->onDelete('cascade');
-            $table->enum('afmeting', ['Klein', 'Normaal', 'Groot']);
             $table->timestamps();
             $table->enum('hoeveelheid', ['Klein', 'Normaal', 'Groot']);
         });
