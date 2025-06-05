@@ -11,8 +11,8 @@ class Pizzacontroller extends Controller
 {
     public function index()
     {
-        $pizzas = Pizza::all();
-        $ingredients = Ingredient::all();
+       $pizzas = Pizza::with('ingredients')->get();
+    $ingredients = Ingredient::all();
        return view('menu', compact('pizzas', 'ingredients'));
         
     }

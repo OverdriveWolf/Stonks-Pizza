@@ -16,8 +16,8 @@ class KlantSeeder extends Seeder
             'naam' => 'Jan Jansen',
             'adres' => 'Straatweg 123',
             'woonplaats' => 'Utrecht',
-            'telefoonnummer' => '0612345678',
-            'emailadres' => 'jan@example.com'
+            'telefoon' => '0612345678',
+            'email' => 'jan@example.com'
         ]);
     }
 }

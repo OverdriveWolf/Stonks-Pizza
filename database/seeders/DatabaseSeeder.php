@@ -18,9 +18,8 @@ class DatabaseSeeder extends Seeder
             KlantSeeder::class,
             IngredientSeeder::class,
             PizzaSeeder::class,
-            BestellingSeeder::class,
-            BestelregelSeeder::class,
-            
+            // BestellingSeeder::class,
+            // BestelregelSeeder::class,
         ]);
     }
 }

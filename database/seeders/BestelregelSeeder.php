@@ -17,6 +17,7 @@ class BestelregelSeeder extends Seeder
             'Order_id' => $bestelling->id,
             'pizza_id' => $pizza->id,
             'aantal' => 2,
+            'prijs' => $pizza->prijs, // Assuming the Pizza model has a 'prijs' attribute	
         ]);
     }
 }

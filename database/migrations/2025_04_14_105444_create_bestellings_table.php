@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('Customer_id')->constrained('customers')->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->datetime('datum');
-            $table->enum('status', ['Initieel', 'Betaald', 'Bereiden', 'InOven', 'Onderweg', 'Bezorgd']);
+            $table->enum('status', ['Initieel', 'Geannuleerd', 'Betaald', 'Bereiden', 'InOven', 'Onderweg', 'Bezorgd' ])
+                  ->default('Initieel');
             $table->timestamps();
         });
     }

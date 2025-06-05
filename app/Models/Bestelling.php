@@ -13,12 +13,8 @@ class Bestelling extends Model
     'klant_id',
     'betaald',
   ];
-  public function bestelregels()
-  {
+public function bestelregels() {
     return $this->hasMany(Bestelregel::class);
-  }
-  public function klant()
-  {
-    return $this->belongsTo(Klant::class);
-  } 
+}
+
 }

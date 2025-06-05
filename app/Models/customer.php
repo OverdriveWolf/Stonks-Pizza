@@ -9,4 +9,11 @@ class customer extends Model
     public function bestellingen() {
         return $this->hasMany(Bestelling::class);
     }
+    protected $fillable = [
+        'naam',
+        'adres',
+        'woonplaats',
+        'email',
+        'telefoon',
+    ];
 }

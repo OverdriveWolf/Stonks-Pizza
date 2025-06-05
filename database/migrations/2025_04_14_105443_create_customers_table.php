@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('naam');
             $table->string('adres');
             $table->string('woonplaats');
-            $table->string('telefoonnummer');
-            $table->string('emailadres');
+            $table->string('email');
+            $table->string('telefoon');
             $table->timestamps();
         });
     }

@@ -1,157 +1,104 @@
-
-
 @extends('layouts.app-layout')
 
 @section('content')
 <head>
-<link rel="stylesheet" href="{{ asset('styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles.css') }}">
 </head>
-<div class="container mx-auto pt-[100px] px-6">
-    <h1 class="text-3xl font-bold mb-6">Winkelwagentje</h1>
 
-    @if (session('success'))
-        <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
-            {{ session('success') }}
-        </div>
-    @endif
+ <main style="margin-left: 220px;">
+<div class="cart-container">
+    <h1 class="cart-title">🍕 Your Cart</h1>
 
-    <div class="flex flex-1">
-        {{-- Sidebar with Logo --}}
-        <aside class="w-1/5 bg-blue-700 text-white flex flex-col items-center p-4">
-            <div class="mb-4 w-full text-center">
-                <img src="{{ asset('logo.png') }}" alt="Logo" class="logo">
-            </div>
-        </aside>
-
-        <div class="layout w-4/5 px-6">
-            @if (empty($cart) || count($cart) === 0)
-                <p class="text-gray-600">Je winkelwagentje is leeg.</p>
+    <div class="cart-grid">
+        {{-- Left Side – Order Items --}}
+        <div class="cart-items">
+            @if ($orders->isEmpty())
+                <div class="empty-cart">Je winkelwagentje is leeg.</div>
             @else
-                <table class="w-full text-left border-collapse bg-white shadow rounded overflow-hidden">
-                    <thead class="bg-blue-100">
-                        <tr>
-                            <th class="border-b p-2">Naam</th>
-                            <th class="border-b p-2">Ingrediënten</th>
-                            <th class="border-b p-2">Basisprijs</th>
-                            <th class="border-b p-2">Grootte</th>
-                            <th class="border-b p-2">Status</th>
-                            <th class="border-b p-2">Voortgang</th>
-                            <th class="border-b p-2">Subtotaal</th>
-                            <th class="border-b p-2">Actie</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php $totaal = 0; @endphp
-                        @foreach ($cart as $item)
+                @foreach ($orders as $order)
+                    <div class="order-card">
+                        <h2 class="order-title">Bestelling #{{ $order->id }} - Status: {{ $order->status }}</h2>
+
+                        @php $orderTotaal = 0; @endphp
+
+                        @foreach ($order->bestelregels as $regel)
                             @php
-                            
-                                $factor = $item['groote'] ?? 1;
-                                $ingredientCost = $item['ingredientCost'] ?? 0;
-                                $adjustedPrice = $item['prijs'] * $factor;
-                                $subtotaal = $adjustedPrice + $ingredientCost;
-                                $totaal += $subtotaal;
+                                $pizza = $regel->pizza;
+                                $prijs = $pizza->prijs ?? 0;
+                                $subtotaal = $prijs * $regel->aantal;
+                                $orderTotaal += $subtotaal;
                             @endphp
-                            <tr class="hover:bg-gray-100">
-                                <td class="border-b p-2 font-semibold">{{ $item['naam'] }}</td>
-                                <td class="border-b p-2">
-                                    @if (!empty($item['ingredients']))
-                                        <ul class="list-disc list-inside">
-                                            @foreach ($item['ingredients'] as $ingredient)
-                                                <li>{{ $ingredient['naam'] }} (€{{ number_format($ingredient['prijs'], 2) }})</li>
-                                            @endforeach
-                                        </ul>
-                                        
-                                    @else
-                                        -
+
+                            <div class="item-row">
+                                <img src="{{ asset('Margherita.png') }}" alt="{{ $pizza->naam }}" class="pizza-image">
+                                <div class="item-details">
+                                    <div class="item-name">{{ $pizza->naam }}</div>
+                                    <div class="item-ingredients">{{ $pizza->ingredients?->pluck('naam')->join(', ') ?? 'Geen ingrediënten' }}</div>
+                                    <div class="item-info">Aantal: {{ $regel->aantal }} | Subtotaal: €{{ number_format($subtotaal, 2) }}</div>
+                                </div>
+                                <div class="item-actions">
+                                    <form action="{{ route('winkelwagentje.remove') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $regel->id }}">
+                                        <button class="btn btn-remove">Verwijder</button>
+                                    </form>
+
+                                    @if ($order->status === 'Initieel')
+                                        <form action="{{ route('bestelling.betaal') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $order->id }}">
+                                            <button class="btn btn-pay">Betaal</button>
+                                        </form>
                                     @endif
-                                </td>
-                                <td class="border-b p-2">€{{ number_format($item['prijs'], 2) }}</td>
-                                <td class="border-b p-2">
-                                    {{ $factor == 0.8 ? 'Klein' : ($factor == 1.2 ? 'Groot' : 'Medium') }}
-                                </td>
-                                <td class="border-b p-2">
-    <span class="px-2 py-1 rounded-full text-sm 
-            $item['status'] === 'Initieel' ? 'bg-gray-200 text-gray-800' : 
-            ($item['status'] === 'Betaald' ? 'bg-blue-200 text-blue-800' : 
-            ($item['status'] === 'Bereiden' ? 'bg-orange-200 text-orange-800' : 
-            ($item['status'] === 'InOven' ? 'bg-purple-200 text-purple-800' : 
-            ($item['status'] === 'Onderweg' ? 'bg-teal-200 text-teal-800' : '')))))
-          
-            // Dynamically set the class based on status
-            $item['status'] === 'Geannuleerd' ? 'bg-red-200 text-red-800' : 
-            ($item['status'] === 'Bezorgd' ? 'bg-green-200 text-green-800' : ''))
-
-        }}">
-        {{ $item['status'] ?? 'Onbekend' }}
-    </span>
-</td>
-
-<td class="border-b p-2">
-    @php
-        $statuses = ['Initieel', 'Betaald', 'Bereiden', 'InOven', 'Onderweg', 'Bezorgd', 'Geannuleerd'];
-        // Determine the current step based on the status
-        // If status is not found, default to 'Initieel'
-        $status = $item['status'] ?? 'Initieel'; // default fallback
-        $currentStep = array_search($status, $statuses);
-        $progressPercent = $currentStep !== false ? ($currentStep / (count($statuses) - 1)) * 100 : 0;
-    @endphp
-
-    <div class="w-full bg-gray-200 rounded h-2">
-        <div class="bg-blue-500 h-2 rounded" style="width: {{ $progressPercent }}%"></div>
-    </div>
-</td>
-                                <td class="border-b p-2">€{{ number_format($subtotaal, 2) }}</td>
-                                <td class="border-b p-2">
-                                 <form action="{{ route('winkelwagentje.remove') }}" method="POST">
-                                @csrf
-                                    <input type="hidden" name="id" value="{{ $item['id'] }}">
-                                    <button class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Verwijder</button>
-                                </form>
-
-                                        @if (!in_array($item['status'], ['Bezorgd', 'Geannuleerd']))
-        <form action="{{ route('bestelling.annuleer') }}" method="POST">
-    @csrf
-    <input type="hidden" name="id" value="{{ $item['id'] }}">
-    <button class="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600 w-full">Annuleer</button>
-</form>
-
-        
-    @endif
-    @if ($item['status'] === 'Initieel')
-    <form action="{{ route('bestelling.betaal') }}" method="POST">
-        @csrf
-        <input type="hidden" name="id" value="{{ $item['id'] }}">
-        <button class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 w-full mt-1">
-            Betaal
-        </button>
-    </form>
-@endif
-
-</td>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         @endforeach
-                    </tbody>
-                    <tfoot class="bg-blue-50">
-                        <tr>
-                            <td colspan="4" class="p-2 font-bold text-right">Totaal:</td>
-                            <td colspan="2" class="p-2 font-bold">€{{ number_format($totaal, 2) }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
+
+                        <div class="order-total">Totaal: €{{ number_format($orderTotaal, 2) }}</div>
+                    </div>
+                @endforeach
             @endif
         </div>
+
+        {{-- Right Side – Summary --}}
+        <div class="cart-summary">
+            <h2 class="summary-title">Order Summary</h2>
+
+            <div class="summary-line"><span>Subtotaal:</span><span>€{{ number_format($orderTotaal ?? 0, 2) }}</span></div>
+            <div class="summary-line"><span>Bezorgkosten:</span><span>€3.99</span></div>
+            <div class="summary-line"><span>BTW (9%):</span><span>€{{ number_format(($orderTotaal ?? 0) * 0.09, 2) }}</span></div>
+            <hr>
+            <div class="summary-total"><span>Totaal:</span><span>€{{ number_format(($orderTotaal ?? 0) + 3.99 + (($orderTotaal ?? 0) * 0.09), 2) }}</span></div>
+
+            <form>
+                <label class="promo-label">Kortingscode:</label>
+                <div class="promo-inputs">
+                    <input type="text" placeholder="Voer code in" class="promo-field">
+                    <button type="submit" class="btn btn-dark">Toepassen</button>
+                </div>
+            </form>
+
+            <div class="delivery-info">
+                ⏱️ Geschatte bezorgtijd: 25-35 minuten<br>
+                📍 Leveradres: 123 Main St, City
+            </div>
+            @if ($order->status === 'Initieel')
+                <form action="{{ route('bestelling.betaal') }}" method="POST">
+                 @csrf
+                <input type="hidden" name="id" value="{{ $order->id }}">
+                <button class="btn btn-checkout">Verder naar afrekenen</button>
+                                        </form>                           
+              @endif
+            <a href="{{ route('menu') }}" class="btn btn-outline">Terug naar menu</a>
+        </div>
     </div>
-
-    <footer class="footer"> @include('layouts.footer')</footer>
 </div>
-  @if ($item['status'] !== 'Bezorgd')
-<script>
+</main>
+@include('layouts.footer')
 
-    setInterval(() => {
+<script>
+    document.getElementById("btnRefresh")?.addEventListener("click", function () {
         window.location.reload();
-    }, 10000);
-  
+    });
 </script>
-  @endif
 @endsection

@@ -3,155 +3,143 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Pizza;
 use App\Models\Ingredient;
-use  App\Models\Pizza;
-use App\Http\Controllers\Pizzacontroller;
+use App\Models\Order;
+use App\Models\Bestelregel;
+use App\Models\Bestelling; // Assuming Bestelling is an alias for Order
+use App\Models\Customer;
+use Carbon\Carbon;
 
 class Winkelwagentjecontroller extends Controller
 {
-public function index()
+   public function index()
 {
-    $cart = session()->get('cart', []);
-    $updated = false;
+    $orders = Order::with(['bestelregels.pizza'])->get();
 
     $statusFlow = [
         'Betaald'   => 'Bereiden',
         'Bereiden'  => 'InOven',
         'InOven'    => 'Onderweg',
-        'Onderweg'  => 'Bezorgd'
+        'Onderweg'  => 'Bezorgd',
     ];
 
-    foreach ($cart as &$item) {
-        if (!isset($item['status']) || in_array($item['status'], ['Geannuleerd', 'Bezorgd'])) {
-            continue;
+    foreach ($orders as $order) {
+        $elapsed = \Carbon\Carbon::parse($order->updated_at)->diffInSeconds(now());
+
+        // If order is Bezorgd or Geannuleerd for 10+ seconds, delete it
+        if (in_array($order->status, ['Bezorgd', 'Geannuleerd']) && $elapsed >= 10) {
+            $order->delete(); // Cascade should remove related bestelregels
+            continue; // Skip processing deleted order
         }
 
-        if (!isset($item['status_updated_at'])) {
-            $item['status_updated_at'] = time(); // set initial timestamp
-        }
-
-        $currentStatus = $item['status'];
-
-        if (isset($statusFlow[$currentStatus])) {
-            $nextStatus = $statusFlow[$currentStatus];
-
-            if ((time() - $item['status_updated_at']) >= 10) {
-                $item['status'] = $nextStatus;
-                $item['status_updated_at'] = time(); // reset timer for next step
-                $updated = true;
+        // Auto-progress logic
+        if (!in_array($order->status, ['Bezorgd', 'Geannuleerd']) && $elapsed >= 10) {
+            if (isset($statusFlow[$order->status])) {
+                $order->status = $statusFlow[$order->status];
+                $order->save();
             }
         }
     }
 
-    if ($updated) {
-        session(['cart' => $cart]);
+        return view('winkelwagentje', compact('orders'));
     }
-
-    return view('winkelwagentje', compact('cart'));
-}
-
-
-
-    public function remove(Request $request)
-{
-    $id = $request->input('id');
-    $cart = session()->get('cart', []);
-
-    // Rebuild cart without the item with the matching ID
-    $cart = array_filter($cart, function ($item) use ($id) {
-        return $item['id'] != $id;
-    });
-
-    // Reset the array keys to avoid gaps (important for display loops)
-    $cart = array_values($cart);
-
-    session(['cart' => $cart]);
-
-    return redirect()->route('winkelwagentje.index')->with('success', 'Pizza verwijderd uit winkelwagentje.');
-}
 
 
 
 public function store(Request $request)
 {
- // Validate required fields
-$request->validate([
-    'pizza_id' => 'required|exists:pizzas,id',
-    'groote' => 'required|numeric',
-]);
+    //dd($request->all());
+    // Step 1: Validate input
+    $data = $request->validate([
+        'pizza_id' => 'required|exists:pizzas,id',
+        'grootte' => 'required|numeric',
+        'naam' => 'required|string|max:255',
+        'adres' => 'required|string|max:255',
+        'woonplaats' => 'required|string|max:255',
+        'email' => 'required|email',
+        'telefoonnummer' => 'required|string|max:20',
+        'ingredients' => 'array',
+        'ingredients.*' => 'exists:ingredients,id',
+    ]);
 
-$pizza = Pizza::findOrFail($request->pizza_id);
-$factor = floatval($request->input('groote', 1));
+    // Step 2: Save customer
+    $customer = new \App\Models\Customer();
+    $customer->naam = $data['naam'];
+    $customer->adres = $data['adres'];
+    $customer->woonplaats = $data['woonplaats'];
+    $customer->email = $data['email'];
+    $customer->telefoon = $data['telefoonnummer'];
+    $customer->save();
 
-// Handle selected ingredient IDs
-$ingredientIds = $request->input('ingredients', []);
-$ingredients = Ingredient::whereIn('id', $ingredientIds)->get();
+    // Step 3: Create order for this customer
+    $order = new \App\Models\Order();
+    $order->customer_id = $customer->id;
+    $order->status = 'Initieel';
+    $order->datum = now();
 
-$ingredientCost = $ingredients->sum('prijs');
+    $order->save();
 
-$cartItem = [
-    'id' => $pizza->id,
-    'naam' => $pizza->naam,
-    'prijs' => $pizza->prijs ?? 0, // fallback if prijs is null
-    'groote' => $factor,
-    'ingredients' => $ingredients->map(function ($ingredient) {
-        return [
-            'id' => $ingredient->id,
-            'naam' => $ingredient->naam,
-            'prijs' => $ingredient->prijs,
-        ];
-    })->toArray(),
-    'ingredientCost' => $ingredientCost,
-    'status' => 'Initieel', // Default status
-];
+    // Step 4: Create bestelregel (line item for pizza)
+    $pizza = \App\Models\Pizza::findOrFail($data['pizza_id']);
 
-// Add to cart in session
-$cart = session()->get('cart', []);
-$cart[] = $cartItem;
-session(['cart' => $cart]);
+    $bestelregel = new \App\Models\Bestelregel();
+    $bestelregel->order_id = $order->id;
+    $bestelregel->aantal = 1; // Assuming one pizza per order for simplicity
+    $bestelregel->pizza_id = $pizza->id;
+    $bestelregel->prijs = $pizza->prijs * $data['grootte']; // price adjusted by size
+    $bestelregel->save();
 
-return redirect()->route('winkelwagentje.index')->with('success', 'Pizza toegevoegd aan je winkelwagentje!');
-
-
-
-
-
-}
-public function betaal(Request $request)
-{
-    $id = $request->input('id');
-    $cart = session()->get('cart', []);
-
-    foreach ($cart as &$item) {
-        if ($item['id'] == $id && $item['status'] === 'Initieel') {
-            $item['status'] = 'Betaald';
-            $item['status_updated_at'] = time(); // start status timer
-            break;
-        }
+    // Step 5: Attach ingredients to the pizza (if any)
+    if (!empty($data['ingredients'])) {
+        $pizza->ingredients()->syncWithoutDetaching($data['ingredients']);
+        // NOTE: this does not affect existing ingredients unless the pivot is being reused
     }
 
-    session(['cart' => $cart]);
-
-    return redirect()->route('winkelwagentje.index')->with('success', 'Bestelling betaald!');
+    return redirect()->back()->with('success', 'Bestelling geplaatst!');
 }
 
+
+
+public function betaal(Request $request)
+    {
+        $order = Order::findOrFail($request->id);
+
+        if ($order->status === 'Initieel') {
+            $order->status = 'Betaald';
+            $order->updated_at = now();
+            $order->save();
+        }
+
+        return redirect()->route('winkelwagentje.index')->with('success', 'Bestelling betaald!');
+    }
 
 public function annuleer(Request $request)
-{
-    $id = $request->input('id');
-    $cart = session()->get('cart', []);
+    {
+        $order = Order::findOrFail($request->id);
 
-    foreach ($cart as &$item) {
-        if ($item['id'] == $id && !in_array($item['status'], ['Geannuleerd', 'Bezorgd'])) {
-            $item['status'] = 'Geannuleerd';
-            break;
+        if (!in_array($order->status, ['Bezorgd', 'Geannuleerd'])) {
+            $order->status = 'Geannuleerd';
+            $order->save();
         }
+
+        return redirect()->route('winkelwagentje.index')->with('success', 'Bestelling geannuleerd.');
     }
 
-    session(['cart' => $cart]);
 
-    return redirect()->route('winkelwagentje.index')->with('success', 'Bestelling geannuleerd.');
+public function remove(Request $request)
+{
+    
+ $regel = Bestelling::find($request->id);
+
+
+    if ($regel) {
+        $regel->delete();
+        return redirect()->back()->with('success', 'Bestelregel verwijderd.');
+    }
+
+    return redirect()->back()->with('error', 'Bestelregel niet gevonden.');
+
 }
-
 
 }
