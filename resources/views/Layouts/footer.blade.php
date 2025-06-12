@@ -1,12 +1,12 @@
 <footer class="site-footer">
     <div class="footer-content">
         <div class="footer-column">
-            <h3>Pizza Co</h3>
+            <h3>Stonks Pizza</h3>
             <p>Best pizza in town since 1995</p>
             <div class="footer-socials">
                 <a href="#"><img src="{{ asset('icons/facebook.svg') }}" alt="Facebook"></a>
                 <a href="#"><img src="{{ asset('icons/instagram.svg') }}" alt="Instagram"></a>
-                <a href="#"><img src="{{ asset('icons/x.svg') }}" alt="Twitter"></a>
+                <a href="#"><img src="{{ asset('icons/X2.png') }}" alt="Twitter"></a>
             </div>
         </div>
 
@@ -14,7 +14,7 @@
             <h3>Contact</h3>
             <p>123 Pizza Street<br>
             Phone: (555) 123-4567<br>
-            Email: <a href="mailto:info@pizzaco.com">info@pizzaco.com</a></p>
+            Email: <a href="mailto:info@StonksPizza.com">info@StonksPizza.com</a></p>
         </div>
 
         <div class="footer-column">
@@ -37,6 +37,6 @@
     <hr class="footer-divider">
 
     <div class="footer-bottom">
-        &copy; 2024 Pizza Co. All rights reserved.
+        &copy; 2024 Stonks Pizza. All rights reserved.
     </div>
 </footer>

@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<head>
     <meta charset="UTF-8">
     <title>Pizza Menu</title>
-<link rel="stylesheet" href="{{ asset('styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles.css') }}">
+</head>
+<body>
 
-<body>  
-    {{-- Optional: include the nav --}}
     @include('layouts.nav')
 
-    {{-- Main content from child views --}}
+    {{-- Main content --}}
     @yield('content')
-  
+
 </body>
 </html>
+

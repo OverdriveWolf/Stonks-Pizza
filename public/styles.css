@@ -87,11 +87,7 @@ table {
         background-color: #0056b3;
     }
 
-    h2 {
-        margin-top: 30px;
-        margin-bottom: 10px;
-        font-size: 20px;
-    }
+
 
 
 
@@ -132,40 +128,62 @@ p {
 }
 
 /* NAVBAR STYLING */
-.navbar {
-    display: flex;
-    justify-content:  space-between;
-    align-items: center;
-    background-color: #1a2537; /* Deep navy */
-    padding: 1rem 2rem;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.navbar-left .logo {
-    height: 80px;
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+.brand-name {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
 }
 
 .navbar-links {
-    list-style: none;
     display: flex;
-    gap: 2rem;
-    margin: 0;
-    padding: 0;
+    list-style: none;
+    gap: 25px;
 }
 
 .navbar-links li a {
-    color: white;
     text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
+    color: #333;
+    font-size: 14px;
+    transition: color 0.2s;
 }
 
 .navbar-links li a:hover {
-    color: #f39c12; /* Accent hover color (e.g., orange) */
+    color: #d62828;
 }
+
+.navbar-right .cart-icon {
+    width: 25px;
+    height: 25px;
+}
+
 
 
 .sidebar {
@@ -224,7 +242,7 @@ hr {
     border-radius: 4px;
 }
 
-.footer {
+/* .footer {
     grid-area: footer;
     background: #3366cc;
     color: white;
@@ -233,7 +251,7 @@ hr {
     justify-content: center;
     font-weight: bold;
     gap: 20px;
-}
+} */
 
 .pizza-grid {
     display: grid;
@@ -505,6 +523,7 @@ hr {
 }
 
 .footer-socials a img {
+    margin-top: 10px;
     width: 24px;
     margin-right: 12px;
     transition: filter 0.3s ease;
@@ -521,9 +540,7 @@ hr {
 }
 
 /* Twitter (X) black */
-.footer-socials a:nth-child(3) img {
-    filter: brightness(0);
-}
+
 
 
 .footer-divider {
