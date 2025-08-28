@@ -1,7 +1,7 @@
 <nav class="navbar">
     <div class="navbar-left">
         <img src="{{ asset('logo.png') }}" alt="Logo" class="logo">
-        <span class="brand-name">Stonks Pizza</span>
+        <!-- <span class="brand-name">Stonks Pizza</span> -->
     </div>
     <ul class="navbar-links">
         <li><a href="/home">Home</a></li>

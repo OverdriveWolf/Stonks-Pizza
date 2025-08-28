@@ -39,7 +39,7 @@
                                         <div class="item-name">{{ $pizza->naam }}</div>
                                         <div class="item-size"><strong>Maat:</strong> {{ ucfirst($afmeting) }}</div>
                                         <div class="item-ingredients">
-                                            {{ $pizza->ingredients?->pluck('naam')->join(', ') ?? 'Geen ingrediënten' }}
+                                            {{ $regel->ingredients?->pluck('naam')->join(', ') ?? 'Geen ingrediënten' }}
                                         </div>
                                         <div class="item-info">
                                             Aantal: {{ $regel->aantal }} | Subtotaal: €{{ number_format($subtotaal, 2) }}
@@ -52,13 +52,34 @@
                                             <button class="btn btn-remove">Verwijder</button>
                                         </form>
 
-                                        @if ($order->status === 'Initieel')
-                                            <form action="{{ route('bestelling.betaal') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $order->id }}">
-                                                <button class="btn btn-pay">Betaal</button>
-                                            </form>
-                                        @endif
+                             @if ($order->status === 'Initieel')
+                                @foreach ($order->bestelregels as $regel)
+                                    <div class="cart-item">
+                                        <span>{{ $regel->pizza->naam }} ({{ ucfirst($regel->afmeting) }})</span>
+                                        <span>€{{ number_format($regel->prijs, 2) }}</span>
+
+                                        <!-- Add one more -->
+                                        <form action="{{ route('winkelwagentje.addPizza') }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                            <input type="hidden" name="pizza_id" value="{{ $regel->pizza_id }}">
+                                            <input type="hidden" name="grootte" value="{{ $regel->afmeting }}">
+                                            <input type="hidden" name="ingredients" value="{{ implode(',', $regel->ingredients->pluck('id')->toArray()) }}">
+                                            <button type="submit" class="btn btn-add">➕</button>
+                                        </form>
+
+                                        <!-- Remove one -->
+                                        <form action="{{ route('winkelwagentje.removePizza') }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="regel_id" value="{{ $regel->id }}">
+                                            <button type="submit" class="btn btn-remove">➖</button>
+                                        </form>
+                                    </div>
+                                @endforeach
+                            @endif
+
+
                                     </div>
                                 </div>
                             @endforeach
@@ -116,17 +137,22 @@
                     📍 Leveradres: 123 Main St, City
                 </div>
 
-                @if (!$orders->isEmpty())
-                    @foreach ($orders as $order)
-                        @if ($order->status === 'Initieel')
-                            <form action="{{ route('bestelling.betaal') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="id" value="{{ $order->id }}">
-                                <button class="btn btn-checkout">Verder naar afrekenen</button>
-                            </form>
-                        @endif
-                    @endforeach
-                @endif
+         @if (!$orders->isEmpty())
+    @php
+        $initieleOrderIds = $orders->where('status', 'Initieel')->pluck('id');
+    @endphp
+
+    @if ($initieleOrderIds->isNotEmpty())
+        <form action="{{ route('bestelling.betaal') }}" method="POST">
+            @csrf
+            @foreach ($initieleOrderIds as $orderId)
+                <input type="hidden" name="ids[]" value="{{ $orderId }}">
+            @endforeach
+            <button class="btn btn-checkout">Verder naar afrekenen</button>
+        </form>
+    @endif
+@endif
+
 
                 <a href="{{ route('menu') }}" class="btn btn-outline">Terug naar menu</a>
             </div>

@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('afmeting')->default('normaal');
             $table->timestamps();
         });
+        Schema::create('bestelregel_ingredient', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('bestelregel_id')->constrained()->onDelete('cascade');
+    $table->foreignId('ingredient_id')->constrained()->onDelete('cascade');
+    });
+
     }
 
     public function down(): void

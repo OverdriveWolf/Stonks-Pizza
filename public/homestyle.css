@@ -10,93 +10,18 @@ body {
 p{
     color: black;
 }
-/* Navbar */
-nav {
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    padding: 10px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-nav ul {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-}
-nav ul li a {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    position: relative;
-}
-nav ul li a:hover,
-nav ul li a.active {
-    color: #e60023;
-    font-weight: bold;
-}
 
 /* Hero Section */
 .hero {
-    background-color: #e60023;
-    color: white;
+    background-color: #fff; /* white */
+    color: #e60023; /* red text */
     padding: 60px 20px;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-/* Basic Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    flex-direction: column; /* stack children vertically */
+    align-items: center;    
+    text-align: center;     
 }
 
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 30px;
-    background-color: #fff;
-    border-bottom: 1px solid #ddd;
-    font-family: Arial, sans-serif;
-}
-
-.navbar-left {
-    display: flex;
-    align-items: center;
-}
-
-
-.brand-name {
-    font-weight: bold;
-    font-size: 16px;
-    color: #333;
-}
-
-.navbar-links {
-    display: flex;
-    list-style: none;
-    gap: 25px;
-}
-
-.navbar-links li a {
-    text-decoration: none;
-    color: #333;
-    font-size: 14px;
-    transition: color 0.2s;
-}
-
-.navbar-links li a:hover {
-    color: #d62828;
-}
-
-.navbar-right .cart-icon {
-    width: 25px;
-    height: 25px;
-}
 
 .hero .hero-text {
     max-width: 500px;
@@ -110,6 +35,7 @@ nav ul li a.active {
     margin-bottom: 20px;
 }
 .hero img {
+    margin-top: 50px;
     max-width: 400px;
     border-radius: 16px;
 }
@@ -128,6 +54,8 @@ nav ul li a.active {
     background-color: #f3f3f3;
 }
 
+
+
 /* Section Titles */
 .section-title {
     text-align: center;
@@ -143,14 +71,22 @@ nav ul li a.active {
     gap: 40px;
     text-align: center;
     margin-bottom: 50px;
+    color: white;
+    background-color: red;
+}
+P{
+    color: white;
 }
 .features .feature {
     max-width: 200px;
+    color: white;
 }
+
 .features .feature i {
     font-size: 30px;
     color: #e60023;
     margin-bottom: 10px;
+      color: white;
 }
 
 /* Pizza Cards */
@@ -213,8 +149,13 @@ nav ul li a.active {
     justify-content: center;
     gap: 20px;
 }
+strong {
+    color: white;
+    font-size: large;
+    
+}
 .testimonial {
-    background: white;
+    background: red;
     padding: 20px;
     border-radius: 10px;
     max-width: 300px;

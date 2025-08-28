@@ -1,6 +1,7 @@
 @extends('layouts.app-layout')
 
 @section('content')
+
 <head>
     <link rel="stylesheet" href="{{ asset('homestyle.css') }}">
 </head>
@@ -8,16 +9,25 @@
 <!-- Hero Section -->
 <section class="hero">
     <div class="hero-text">
-        <h1>Best Pizza in Town</h1>
-        <p>Fresh ingredients, authentic recipes, and unbeatable taste since 1995</p>
-        <a href="{{ route('winkelwagentje.store') }}" class="btn">Order Now</a>
-        <a href="{{ route('menu') }}" class="btn">View Menu</a>
+     
+         <div style="text-align:center; margin-top: 20px;">
     </div>
-    <img src="{{ asset('logopizza.png') }}" alt="Delicious Pizza">
+    </div>
+     <h2 class="section-title">Popular Pizza</h2>
+       <div class="pizza-card">
+            <img src="{{ asset('Margherita.png') }}" alt="Margherita">
+            <h4>Margherita</h4>
+            <p>Classic tomato, mozzarella & basil</p>
+            <p class="price">$14.99</p>
+                <a href="{{ route('winkelwagentje.store') }}" class="btn">Order Now</a>
+                   <a href="{{ route('menu') }}" class="btn">View Full Menu</a>
+        </div>
+
 </section>
 
 <!-- Features Section -->
 <section class="features">
+   
     <div class="feature">
         <i class="fas fa-leaf"></i>
         <h4>Fresh Ingredients</h4>
@@ -37,33 +47,11 @@
 
 <!-- Popular Pizzas Section -->
 <section class="pizza-section">
-    <h2 class="section-title">Popular Pizzas</h2>
+   
     <div class="pizza-grid">
-        <div class="pizza-card">
-            <img src="{{ asset('Margherita.png') }}" alt="Margherita">
-            <h4>Margherita</h4>
-            <p>Classic tomato, mozzarella & basil</p>
-            <p class="price">$14.99</p>
-            <button class="btn">Order Now</button>
-        </div>
-        <div class="pizza-card">
-            <img src="{{ asset('Margherita.png') }}" alt="Pepperoni Supreme">
-            <h4>Pepperoni Supreme</h4>
-            <p>Loaded with pepperoni & cheese</p>
-            <p class="price">$16.99</p>
-            <button class="btn">Order Now</button>
-        </div>
-        <div class="pizza-card">
-            <img src="{{ asset('Margherita.png') }}" alt="Meat Lovers">
-            <h4>Meat Lovers</h4>
-            <p>Beef, sausage, pepperoni & bacon</p>
-            <p class="price">$19.99</p>
-            <button class="btn">Order Now</button>
-        </div>
+     
     </div>
-    <div style="text-align:center; margin-top: 20px;">
-        <a href="{{ route('menu') }}" class="btn">View Full Menu</a>
-    </div>
+   
 </section>
 
 <!-- Testimonials -->

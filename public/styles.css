@@ -140,9 +140,39 @@ p {
     justify-content: space-between;
     align-items: center;
     padding: 10px 30px;
-    background-color: #fff;
+    background-color: #e60023; /* red */
     border-bottom: 1px solid #ddd;
     font-family: Arial, sans-serif;
+    color: white;
+}
+
+.navbar a {
+    color: white; /* make links white */
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: #e60023; /* red */
+    border-bottom: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.navbar a {
+    color: white; /* make links white */
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
 }
 
 .navbar-left {
@@ -170,7 +200,7 @@ p {
 
 .navbar-links li a {
     text-decoration: none;
-    color: #333;
+    color: white;
     font-size: 14px;
     transition: color 0.2s;
 }

@@ -26,7 +26,7 @@
                         <input type="radio"
                                name="selected_pizza"
                                value="{{ $pizza->id }}"
-                               onclick="selectIngredients({{ $pizza->id }}, '{{ $pizza->naam }}', '{{ $pizza->prijs }}')"
+                               onclick='selectIngredients({{ $pizza->id }}, @json($pizza->naam), @json($pizza->prijs))'
                                class="hidden">
                         <img src="{{ asset('Margherita.png') }}" alt="{{ $pizza->naam }}" class="pizza-thumb">
                         <div class="pizza-details">
@@ -73,14 +73,14 @@
                 <input type="text" name="naam" class="w-full border px-3 py-2 rounded" required>
             </div>
 
+             <div class="mb-4">
+                <label class="block font-medium">Woonplaats</label>
+                <input type="text" name="woonplaats" class="w-full border px-3 py-2 rounded" required>
+            </div>
+            
             <div class="mb-4">
                 <label class="block font-medium">Adres</label>
                 <input type="text" name="adres" class="w-full border px-3 py-2 rounded" required>
-            </div>
-
-            <div class="mb-4">
-                <label class="block font-medium">Woonplaats</label>
-                <input type="text" name="woonplaats" class="w-full border px-3 py-2 rounded" required>
             </div>
 
             <div class="mb-4">
@@ -88,10 +88,17 @@
                 <input type="email" name="email" class="w-full border px-3 py-2 rounded" required>
             </div>
 
-            <div class="mb-4">
-                <label class="block font-medium">Telefoonnummer</label>
-                <input type="tel" name="telefoonnummer" class="w-full border px-3 py-2 rounded" required>
-            </div>
+      <div class="mb-4">
+    <label class="block font-medium">Telefoonnummer</label>
+    <input 
+        type="tel" 
+        name="telefoonnummer"  
+        class="w-full border px-3 py-2 rounded" 
+        required
+        pattern="^\+?[0-9]{9,15}$"
+        title="Voer een geldig telefoonnummer in (bijv. +31612345678 of 0612345678)">
+</div>
+
 
             <button type="submit" class="add-btn w-full">Bestellen</button>
         </form>
@@ -106,21 +113,30 @@
         return [$pizza->id => $pizza->ingredients->pluck('id')];
     }));
 
-    function selectIngredients(pizzaId, pizzaName, pizzaPrice) {
-        document.getElementById('ingredients-section').style.display = 'block';
+ function selectIngredients(pizzaId, pizzaName, pizzaPrice) {
+    document.getElementById('ingredients-section').style.display = 'block';
 
-        // Reset ingredients
-        document.querySelectorAll('input[name="ingredients[]"]').forEach(cb => cb.checked = false);
+    // Reset all checkboxes
+    document.querySelectorAll('input[name="ingredients[]"]').forEach(cb => {
+        cb.checked = false;
+        cb.disabled = false; // make sure user can change freely
+    });
 
-        // Check relevant
-        (pizzaIngredients[pizzaId] || []).forEach(id => {
-            const checkbox = document.getElementById('ingredient-' + id);
-            if (checkbox) checkbox.checked = true;
-        });
+    // Pre-check the defaults, but mark them as non-editable if you want
+    (pizzaIngredients[pizzaId] || []).forEach(id => {
+        const checkbox = document.getElementById('ingredient-' + id);
+        if (checkbox) {
+            checkbox.checked = true;
+            // Optional: lock them so they can’t be unchecked
+            // checkbox.disabled = true;
+        }
+    });
 
-        document.getElementById('selectedPizzaId').value = pizzaId;
-        document.getElementById('selectedPizzaName').value = pizzaName;
-        document.getElementById('selectedPizzaPrice').value = pizzaPrice;
-    }
+    // Update hidden fields for this order only
+    document.getElementById('selectedPizzaId').value = pizzaId;
+    document.getElementById('selectedPizzaName').value = pizzaName;
+    document.getElementById('selectedPizzaPrice').value = pizzaPrice;
+}
+
 </script>
 @endsection
