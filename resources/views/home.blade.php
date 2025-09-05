@@ -4,6 +4,7 @@
 
 <head>
     <link rel="stylesheet" href="{{ asset('homestyle.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <!-- Hero Section -->
@@ -13,13 +14,12 @@
          <div style="text-align:center; margin-top: 20px;">
     </div>
     </div>
-     <h2 class="section-title">Popular Pizza</h2>
        <div class="pizza-card">
             <img src="{{ asset('Margherita.png') }}" alt="Margherita">
             <h4>Margherita</h4>
-            <p>Classic tomato, mozzarella & basil</p>
-            <p class="price">$14.99</p>
-                <a href="{{ route('winkelwagentje.store') }}" class="btn">Order Now</a>
+            <p>Classic tomato sauce, mozzarella & basil</p>
+            <p class="price">€1.50</p>
+               <a href="{{ route('quickOrder.form', ['pizza' => 1]) }}" class="btn">Order Now</a>
                    <a href="{{ route('menu') }}" class="btn">View Full Menu</a>
         </div>
 

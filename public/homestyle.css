@@ -35,7 +35,6 @@ p{
     margin-bottom: 20px;
 }
 .hero img {
-    margin-top: 50px;
     max-width: 400px;
     border-radius: 16px;
 }
@@ -104,7 +103,7 @@ P{
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 12px;
-    width: 280px;
+    width: 480px;
     text-align: center;
     padding: 15px;
     transition: 0.3s ease;
@@ -220,4 +219,92 @@ strong {
     margin-top: 20px;
     font-size: 12px;
     color: #999;
+}
+
+
+/* ===================== */
+/* 📱 RESPONSIVE DESIGN  */
+/* ===================== */
+
+/* Tablet adjustments */
+@media (max-width: 1024px) {
+    .features {
+        flex-wrap: wrap;   /* allow wrapping */
+        gap: 20px;
+    }
+
+    .pizza-card {
+        width: 300px;      /* smaller cards */
+    }
+
+    .testimonials {
+        flex-wrap: wrap;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    /* Hero */
+    .hero {
+        padding: 30px 15px;
+    }
+    .hero h1 {
+        font-size: 26px;
+    }
+    .hero .btn {
+        margin-top: 10px;
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+    .pizza-card {
+        width: 100%;       /* full width on small screens */
+        max-width: 350px;
+    }
+
+    /* Features */
+    .features {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 30px 10px;
+    }
+
+    /* Testimonials */
+    .testimonials {
+        flex-direction: column;
+        align-items: center;
+    }
+    .testimonial {
+        max-width: 90%;
+    }
+
+    /* CTA */
+    .cta h2 {
+        font-size: 22px;
+    }
+    .cta p {
+        font-size: 16px;
+    }
+    .cta .btn {
+        display: block;
+        margin: 10px auto;
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 22px;
+    }
+    .pizza-card {
+        max-width: 100%;
+    }
+    .features {
+        gap: 15px;
+    }
+    .testimonial {
+        padding: 15px;
+    }
 }

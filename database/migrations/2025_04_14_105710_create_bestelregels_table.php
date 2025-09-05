@@ -14,6 +14,7 @@ return new class extends Migration
             $table->foreignId('pizza_id')->constrained('pizzas')->onDelete('cascade');
             $table->integer('aantal');
             $table->decimal('prijs', 8, 2);
+            $table->decimal('totaal_prijs', 8, 2)->virtualAs('aantal * prijs');
             $table->string('afmeting')->default('normaal');
             $table->timestamps();
         });

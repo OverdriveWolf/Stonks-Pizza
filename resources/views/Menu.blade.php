@@ -3,6 +3,7 @@
 @section('content')
 <head>
     <link rel="stylesheet" href="{{ asset('menustyle.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <div class="min-h-screen flex flex-col">
@@ -37,7 +38,7 @@
                 <label class="block font-medium">Grootte</label>
                 <div class="space-y-1">
                     <label><input type="radio" name="grootte" value="klein"> Klein (20cm)</label><br>
-                    <label><input type="radio" name="grootte" value="normaal" checked> Medium (25cm)</label><br>
+                    <label><input type="radio" name="grootte" value="normaal"x> Medium (25cm)</label><br>
                     <label><input type="radio" name="grootte" value="groot"> Groot (30cm)</label>
                 </div>
             </div>

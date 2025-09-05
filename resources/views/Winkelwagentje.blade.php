@@ -2,10 +2,11 @@
 
 @section('content')
 <head>
-    <link rel="stylesheet" href="{{ asset('styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('orderstyle.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<main style="margin-left: 220px;">
+
     <div class="cart-container">
         <h1 class="cart-title">🍕 Your Cart</h1>
 
@@ -46,45 +47,42 @@
                                         </div>
                                     </div>
                                     <div class="item-actions">
-                                        <form action="{{ route('winkelwagentje.remove') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ $regel->id }}">
-                                            <button class="btn btn-remove">Verwijder</button>
+                                        
                                         </form>
 
-                             @if ($order->status === 'Initieel')
-                                @foreach ($order->bestelregels as $regel)
-                                    <div class="cart-item">
-                                        <span>{{ $regel->pizza->naam }} ({{ ucfirst($regel->afmeting) }})</span>
-                                        <span>€{{ number_format($regel->prijs, 2) }}</span>
+                           @if ($order->status === 'Initieel')
+    @foreach ($order->bestelregels as $regel)
+        <div class="cart-item flex justify-between items-center p-2 border-b">
+  
+      
 
-                                        <!-- Add one more -->
-                                        <form action="{{ route('winkelwagentje.addPizza') }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <input type="hidden" name="order_id" value="{{ $order->id }}">
-                                            <input type="hidden" name="pizza_id" value="{{ $regel->pizza_id }}">
-                                            <input type="hidden" name="grootte" value="{{ $regel->afmeting }}">
-                                            <input type="hidden" name="ingredients" value="{{ implode(',', $regel->ingredients->pluck('id')->toArray()) }}">
-                                            <button type="submit" class="btn btn-add">➕</button>
-                                        </form>
+            <div class="actions">
+                <!-- Add one -->
+                <form action="{{ route('winkelwagentje.increment') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <input type="hidden" name="regel_id" value="{{ $regel->id }}">
+                    <button type="submit" class="btn btn-add">➕</button>
+                </form>
 
-                                        <!-- Remove one -->
-                                        <form action="{{ route('winkelwagentje.removePizza') }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="hidden" name="regel_id" value="{{ $regel->id }}">
-                                            <button type="submit" class="btn btn-remove">➖</button>
-                                        </form>
-                                    </div>
-                                @endforeach
-                            @endif
+                <!-- Remove one -->
+                <form action="{{ route('winkelwagentje.decrement') }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="regel_id" value="{{ $regel->id }}">
+                    <button type="submit" class="btn btn-remove">➖</button>
+                </form>
+            </div>
+        </div>
+    @endforeach
+@endif
+
 
 
                                     </div>
                                 </div>
                             @endforeach
 
-                            <div class="order-total">Totaal: €{{ number_format($orderTotaal, 2) }}</div>
+                         <!-- <div class="order-total">Totaal: €{{ number_format($orderTotaal, 2) }}</div> -->
                         </div>
                     @endforeach
                 @endif

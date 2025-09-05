@@ -1,0 +1,265 @@
+/* ===============================
+   Base Styles
+================================= */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f4f8;
+    color: #1a1a1a;
+}
+
+p { margin: 0; }
+
+/* ===============================
+   Tables
+================================= */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+td:nth-child(2) {
+    max-width: 200px;
+    word-wrap: break-word;
+    font-size: 0.9em;
+    color: #555;
+}
+
+thead { background-color: #f0f4f8; }
+tfoot { background-color: #f9f9f9; font-weight: bold; }
+
+/* ===============================
+   Status Labels
+================================= */
+.status-label {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    display: inline-block;
+}
+
+.bg-initieel { background: #e2e8f0; color: #333; }
+.bg-betaald { background: #cfe2ff; color: #084298; }
+.bg-bereiden { background: #ffe5b4; color: #663c00; }
+.bg-inoven { background: #e0d4f7; color: #4b0082; }
+.bg-onderweg { background: #d2f4ea; color: #0f5132; }
+.bg-bezorgd { background: #d4edda; color: #155724; }
+.bg-geannuleerd { background: #f8d7da; color: #721c24; }
+
+/* ===============================
+   Progress Bar
+================================= */
+.progress-bar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.progress-bar-inner {
+    height: 100%;
+    background: #007bff;
+}
+
+/* ===============================
+   Buttons
+================================= */
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.btn-remove { background: #e74c3c; color: white; }
+.btn-remove:hover { background: #c82333; }
+
+.btn-cancel { background: #ffc107; color: black; }
+.btn-cancel:hover { background: #e0a800; }
+
+.btn-pay { background: #28a745; color: white; }
+.btn-pay:hover { background: #218838; }
+
+.btn-dark { background: #212121; color: white; }
+.btn-checkout { width: 100%; background: #d32f2f; color: white; margin-top: 20px; }
+.btn-outline {
+    border: 2px solid #3498db;
+    color: #3498db;
+    background: transparent;
+    padding: 8px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+}
+
+.btn-refresh {
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+}
+.btn-refresh:hover { background: #0056b3; }
+
+/* ===============================
+   Cart Layout
+================================= */
+.cart-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.cart-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #d32f2f;
+}
+
+.cart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* ===============================
+   Cart Items
+================================= */
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.order-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.item-row {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+.pizza-image {
+    width: 100px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+.item-details { flex: 1; min-width: 150px; }
+.item-name { font-weight: bold; }
+.item-ingredients { font-size: 13px; color: #666; }
+.item-info { font-size: 14px; margin-top: 4px; color: #555; }
+
+.item-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* ===============================
+   Cart Summary
+================================= */
+.cart-summary {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    height: fit-content;
+}
+
+.summary-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 1rem; }
+.summary-line,
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 14px;
+}
+.summary-total {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-top: 10px;
+    color: #d32f2f;
+}
+
+.promo-label { margin-top: 12px; display: block; }
+.promo-inputs { display: flex; gap: 6px; margin-top: 6px; }
+.promo-field {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.delivery-info { font-size: 13px; margin-top: 16px; color: #555; }
+
+/* ===============================
+   Footer
+================================= */
+.site-footer {
+    background: #1e293b;
+    color: #fff;
+    padding: 40px 20px 20px;
+    font-size: 14px;
+    margin-top: 40px;
+}
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto 20px;
+}
+.footer-column { flex: 1 1 220px; margin: 10px; }
+.footer-column h3 { font-size: 16px; margin-bottom: 10px; }
+.footer-column a { color: #cbd5e1; text-decoration: none; }
+.footer-divider { border-top: 1px solid #334155; margin: 20px 0; }
+.footer-bottom { text-align: center; font-size: 13px; color: #94a3b8; }
+
+/* ===============================
+   Responsive
+================================= */
+@media (max-width: 992px) {
+    .cart-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+    .item-row {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .pizza-image { width: 80%; max-width: 200px; }
+    .item-actions { flex-direction: row; justify-content: center; flex-wrap: wrap; }
+    .btn { width: 100%; margin-top: 10px; }
+}
+    

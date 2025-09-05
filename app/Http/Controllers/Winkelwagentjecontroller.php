@@ -102,45 +102,21 @@ class Winkelwagentjecontroller extends Controller
 
     return redirect()->back()->with('success', 'Bestelling geplaatst!');
 }
-public function addPizza(Request $request)
+public function increment(Request $request)
 {
     $data = $request->validate([
-        'order_id' => 'required|exists:orders,id',
-        'pizza_id' => 'required|exists:pizzas,id',
-        'grootte' => 'required|string',
-        'ingredients' => 'nullable|string',
+        'regel_id' => 'required|exists:bestelregels,id',
     ]);
 
-    $order = Order::findOrFail($data['order_id']);
-    $pizza = Pizza::findOrFail($data['pizza_id']);
+    $regel = Bestelregel::findOrFail($data['regel_id']);
+    $regel->aantal += 1;
+    $regel->prijs * $regel->aantal = $regel->prijs;
+    $regel->save();
 
-    // Size multipliers
-    $sizeMultipliers = [
-        'klein' => 0.8,
-        'normaal' => 1,
-        'groot' => 1.2,
-    ];
-    $multiplier = $sizeMultipliers[strtolower($data['grootte'])] ?? 1;
-
-    // Create a new bestelregel
-    $bestelregel = new Bestelregel();
-    $bestelregel->order_id = $order->id;
-    $bestelregel->pizza_id = $pizza->id;
-    $bestelregel->aantal = 1;
-    $bestelregel->afmeting = $data['grootte'];
-    $bestelregel->prijs = $pizza->prijs * $multiplier;
-    $bestelregel->save();
-
-    // Attach same ingredients if given
-    if (!empty($data['ingredients'])) {
-        $ingredientIds = explode(',', $data['ingredients']);
-        $bestelregel->ingredients()->sync($ingredientIds);
-    }
-
-    return redirect()->back()->with('success', 'Pizza toegevoegd aan bestelling!');
+    return redirect()->back()->with('success', 'Pizza toegevoegd!');
 }
 
-public function removePizza(Request $request)
+public function decrement(Request $request)
 {
     $data = $request->validate([
         'regel_id' => 'required|exists:bestelregels,id',
@@ -148,7 +124,6 @@ public function removePizza(Request $request)
 
     $regel = Bestelregel::findOrFail($data['regel_id']);
 
-    // if aantal > 1, decrement. Otherwise delete.
     if ($regel->aantal > 1) {
         $regel->aantal -= 1;
         $regel->save();
@@ -158,6 +133,7 @@ public function removePizza(Request $request)
 
     return redirect()->back()->with('success', 'Pizza verwijderd!');
 }
+
 
    public function betaal(Request $request)
 {
@@ -201,4 +177,65 @@ public function remove(Request $request)
     return redirect()->back()->with('error', 'Bestelregel niet gevonden.');
 
 }
+public function quickOrderForm(Pizza $pizza)
+{
+    $ingredients = Ingredient::all();
+
+    return view('quick-order', compact('pizza', 'ingredients'));
 }
+
+public function quickOrderStore(Request $request, Pizza $pizza)
+{
+    $data = $request->validate([
+        'grootte' => 'required|string|max:255',
+        'naam' => 'required|string|max:255',
+        'woonplaats' => 'required|string|max:255',
+        'adres' => 'required|string|max:255',
+        'email' => 'required|email',
+        'telefoonnummer' => ['required','regex:/^\+?[0-9]{9,15}$/'],
+        'ingredients' => 'array',
+        'ingredients.*' => 'exists:ingredients,id',
+    ]);
+
+    // Size multipliers
+    $sizeMultipliers = [
+        'klein' => 1,
+        'normaal' => 1.25,
+        'groot' => 1.5,
+    ];
+    $afmeting = strtolower(trim($data['grootte']));
+    $multiplier = $sizeMultipliers[$afmeting] ?? 1.25;
+
+    // Create customer
+    $customer = Customer::create([
+        'naam' => $data['naam'],
+        'woonplaats' => $data['woonplaats'],
+        'adres' => Crypt::encrypt($data['adres']),
+        'email' => Crypt::encrypt($data['email']),
+        'telefoon' => Crypt::encrypt($data['telefoonnummer']),
+    ]);
+
+    // Create order
+     $order = new Order(); 
+  $order->customer_id = $customer->id; 
+  $order->status = 'Initieel'; 
+  $order->datum = now(); $order->save();
+
+    // Create bestelregel
+    $bestelregel = Bestelregel::create([
+        'order_id' => $order->id,
+        'pizza_id' => $pizza->id,
+        'aantal' => 1,
+        'afmeting' => $afmeting,
+        'prijs' => $pizza->prijs * $multiplier,
+    ]);
+
+    if (!empty($data['ingredients'])) {
+        $bestelregel->ingredients()->sync($data['ingredients']);
+    }
+
+    return redirect()->route('winkelwagentje.index')->with('success', 'Pizza besteld!');
+}
+
+}
+

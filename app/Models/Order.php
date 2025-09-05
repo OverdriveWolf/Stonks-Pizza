@@ -6,9 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-public function bestelregels()
-{
-    return $this->hasMany(Bestelregel::class, 'order_id');
+  protected $table = 'orders';
+  protected $fillable = [
+    'status',
+    'totaal_bedrag',
+    'customer_id',
+    'betaald',
+  ];
+public function bestelregels() {
+    return $this->hasMany(Bestelregel::class);
 }
 
 

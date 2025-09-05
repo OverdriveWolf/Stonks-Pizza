@@ -9,9 +9,17 @@ header {
     font-size: 32px;
     background-color: #292929;
     color: #fff;
-    padding: 20px 0;
+    padding: 10px 0;
     text-transform: uppercase;
+
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
 }
+
 
 hr {
     margin: 0;
@@ -140,7 +148,7 @@ button[type="submit"]:hover {
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 0.5rem;
-    color: #292929;
+    color:red;
      margin: 0 auto;
     padding: 20px 0;
     border-bottom: 2px solid #ff6b00;
@@ -235,6 +243,9 @@ a{
     font-weight: bold;
     margin-bottom: 4px;
 }
+h4 {
+    color: red;
+}
 
 .description {
     font-size: 13px;
@@ -268,3 +279,44 @@ a{
     background-color: #e65c00;
 }
 
+/* Responsive grid for pizzas */
+@media (max-width: 1024px) { /* tablets */
+  .pizza-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) { /* phones */
+  .pizza-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pizza-thumb {
+    height: 120px; /* smaller image on phones */
+  }
+
+  .menu-heading {
+    font-size: 22px;
+  }
+}
+
+/* Responsive form adjustments */
+@media (max-width: 768px) {
+  form.bg-white {
+    padding: 16px;
+    margin: 0 10px;
+  }
+
+  button[type="submit"] {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+
+/* Make header text shrink on smaller screens */
+@media (max-width: 480px) {
+  header {
+    font-size: 20px;
+    padding: 8px 0;
+  }
+}

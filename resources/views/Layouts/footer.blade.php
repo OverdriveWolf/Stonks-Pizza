@@ -37,6 +37,6 @@
     <hr class="footer-divider">
 
     <div class="footer-bottom">
-        &copy; 2024 Stonks Pizza. All rights reserved.
+        &copy; 2025 Stonks Pizza. All rights reserved.
     </div>
 </footer>
