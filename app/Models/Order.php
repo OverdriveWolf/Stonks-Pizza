@@ -17,5 +17,11 @@ public function bestelregels() {
     return $this->hasMany(Bestelregel::class);
 }
 
+   protected static function booted()
+    {
+        static::deleting(function ($order) {
+            $order->bestelregels()->delete();
+        });
+    }
 
 }
