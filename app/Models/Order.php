@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
   protected $table = 'orders';
@@ -13,6 +13,8 @@ class Order extends Model
     'customer_id',
     'betaald',
   ];
+  use HasFactory;
+  
 public function bestelregels() {
     return $this->hasMany(Bestelregel::class);
 }

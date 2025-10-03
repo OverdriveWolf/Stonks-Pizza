@@ -18,7 +18,6 @@ Route::post('/winkelwagentje/remove', [WinkelwagentjeController::class, 'remove'
 Route::post('/winkelwagentje/increment', [WinkelwagentjeController::class, 'increment'])->name('winkelwagentje.increment');
 Route::patch('/winkelwagentje/decrement', [WinkelwagentjeController::class, 'decrement'])->name('winkelwagentje.decrement');
 Route::post('/winkelwagentje/betaal', [WinkelwagentjeController::class, 'betaal'])->name('bestelling.betaal');
-Route::post('/winkelwagentje/annuleer', [WinkelwagentjeController::class, 'annuleer'])->name('bestelling.annuleer');
 
 
 

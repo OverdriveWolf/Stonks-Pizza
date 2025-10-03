@@ -160,19 +160,6 @@ class Winkelwagentjecontroller extends Controller
         return redirect()->route('winkelwagentje.index')->with('success', 'Alle bestellingen zijn betaald!');
     }
 
-
-    public function annuleer(Request $request)
-    {
-        $order = Order::findOrFail($request->id);
-
-        if (!in_array($order->status, ['Bezorgd', 'Geannuleerd'])) {
-            $order->status = 'Geannuleerd';
-            $order->save();
-        }
-
-        return redirect()->route('winkelwagentje.index')->with('success', 'Bestelling geannuleerd.');
-    }
-
     public function remove(Request $request)
     {
         $order = Order::find($request->id);

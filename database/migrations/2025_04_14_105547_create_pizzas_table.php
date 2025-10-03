@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('naam');
             $table->decimal('prijs', 8, 2)->default(0.00);
-            $table->enum('afmeting', ['Klein', 'Normaal', 'Groot']);
+            $table->enum('afmeting', ['klein', 'normaal', 'groot']);
             $table->timestamps();
         });
     }

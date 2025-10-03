@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Pizza;
 use App\Models\Ingredient;
 
-use Illuminate\Http\Request;
 
 class Homecontroller extends Controller
 {
