@@ -35,7 +35,10 @@ jobs:
 
     - name: Run Migrations
       run: php artisan migrate:fresh --force
-      
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest
       env:
         DB_CONNECTION: sqlite
