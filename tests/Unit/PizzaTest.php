@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Pizza;
 use App\Models\Order;
 use App\Models\Bestelregel;
-use App\Models\Customer;
 use App\Models\Ingredient;
 use Carbon\Carbon;
 
