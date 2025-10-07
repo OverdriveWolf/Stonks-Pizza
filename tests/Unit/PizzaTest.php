@@ -23,7 +23,7 @@ class PizzaTest extends TestCase
         $response = $this->get(route('winkelwagentje.index'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('Winkelwagentje');
+        $response->assertViewIs('winkelwagentje');
         $response->assertViewHas('orders');
     }
 
