@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Order;
-use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderFactory extends Factory
@@ -13,7 +12,7 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'customer_id' => Customer::factory(),
+            'customer_id' => \App\Models\Customer::factory(),
             'status' => 'Initieel',
             'datum' => now(),
         ];

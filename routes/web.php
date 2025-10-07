@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PizzaController;
-use App\Http\Controllers\winkelwagentjeController;
+use App\Http\Controllers\WinkelwagentjeController;
 use App\Http\Controllers\HomeController;
 
 Route::get('/menu', [PizzaController::class, 'index'])->name('menu');

@@ -1,4 +1,4 @@
-@extends('layouts.app-layout')
+@extends('Layouts.app-layout')
 
 @section('content')
 <head>
@@ -158,7 +158,7 @@
     </div>
 </main>
 
-@include('layouts.footer')
+@include('Layouts.footer')
 
 <script>
     document.getElementById("btnRefresh")?.addEventListener("click", function () {

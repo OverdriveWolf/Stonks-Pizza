@@ -9,7 +9,7 @@
 </head>
 <body>
 
-    @include('layouts.nav')
+    @include('Layouts.nav')
 
     {{-- Main content --}}
     @yield('content')

@@ -11,7 +11,7 @@ use App\Models\Customer;
 use App\Models\Bestelling; // Assuming this is the model for bestelregels
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
-class Winkelwagentjecontroller extends Controller
+class WinkelwagentjeController extends Controller
 {
     public function index()
     {
