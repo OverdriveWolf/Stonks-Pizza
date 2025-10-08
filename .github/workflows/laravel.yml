@@ -3,7 +3,26 @@ name: Laravel
 on:
   push:
   pull_request:
-
+            - name: Laravel Pint
+  # You may pin to the exact commit or the version.
+  # uses: aglipanci/laravel-pint-action@8eedec46a1856977c41667f9c66d5562fa3f9c08
+  uses: aglipanci/laravel-pint-action@2.4
+  with:
+    # would you like to run Pint on test mode
+    testMode: # optional
+    # would you like to run Pint on verbose mode
+    verboseMode: # optional
+    # specify the custom config path
+    configPath: # optional
+    # pint preset
+    preset: # optional
+    # only format changed files
+    onlyDirty: # optional
+    # laravel/pint composer version to install a specific version.
+    pintVersion: # optional
+    # Use Laravel Pint version from project composer lock file. Lock file must be preset to use this flag.
+    useComposer: # optional
+          
 jobs:
   laravel-tests:
 
