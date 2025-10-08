@@ -24,7 +24,6 @@ jobs:
     - name: Laravel Pint
       uses: aglipanci/laravel-pint-action@2.4
       with:
-      preset: laravel
             verboseMode: true
             testMode: true
             configPath: "vendor/my-company/coding-style/pint.json"
