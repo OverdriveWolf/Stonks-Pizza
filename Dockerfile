@@ -5,7 +5,7 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get update && apt-get install -y nodejs git libzip-dev zip libpng-dev libjpeg-dev libfreetype6-dev libjpeg62-turbo-dev libwebp-dev libxpm-dev
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm
 
-RUN docker-php-ext-install sqlite3 pdo pdo_mysql mysqli pdo_sqlite zip gd
+RUN docker-php-ext-install pdo pdo_mysql mysqli zip gd
 
 WORKDIR /var/www
 
