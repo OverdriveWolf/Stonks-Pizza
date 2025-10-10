@@ -23,4 +23,8 @@ RUN mkdir -p /var/www/storage /var/www/bootstrap/cache \
 RUN composer install --no-dev --optimize-autoloader
 RUN npm ci && npm run build && rm -r node_modules
 
+COPY /var/www/.env.example /var/www/.env
+RUN php artisan key:generate
+RUN php artisan migrate --force
+
 CMD ["apache2-foreground"]
