@@ -7,8 +7,9 @@ use App\Models\Ingredient;
 
 use Illuminate\Http\Request;
 
-class Pizzacontroller extends Controller
+class PizzaController extends Controller
 {
+ //pizza controller
     public function index()
     {
        $pizzas = Pizza::with('ingredients')->get();
