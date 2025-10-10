@@ -1,6 +1,6 @@
 FROM php:8.2-apache
 
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 
 RUN apt-get update && apt-get install -y nodejs git libzip-dev zip libpng-dev libjpeg-dev libfreetype6-dev libjpeg62-turbo-dev libwebp-dev libxpm-dev
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm
