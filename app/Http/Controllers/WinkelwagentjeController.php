@@ -8,7 +8,6 @@ use App\Models\Ingredient;
 use App\Models\Order;
 use App\Models\Bestelregel;
 use App\Models\Customer;
-use App\Models\Bestelling; // Assuming this is the model for bestelregels
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 class WinkelwagentjeController extends Controller

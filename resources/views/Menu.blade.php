@@ -96,6 +96,13 @@
                         pattern="^\+?[0-9]{9,15}$"
                         title="Voer een geldig telefoonnummer in (bijv. +31612345678 of 0612345678)">
                 </div>
+<p class="text-sm text-gray-600 mt-2">
+    Door te bestellen ga je akkoord met onze
+    <a href="{{ route('privacy') }}" class="text-blue-700 underline hover:text-blue-900">
+        privacyverklaring
+    </a>.
+</p>
+
 
 
                 <button type="submit" class="add-btn w-full">Bestellen</button>
