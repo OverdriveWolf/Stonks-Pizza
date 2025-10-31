@@ -67,3 +67,34 @@ jobs:
       with:
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/stonks-pizza:latest
+
+  migrate:
+    name: Run SQLite Migrations
+    needs: docker
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2.4'
+
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Install Dependencies
+      run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+    - name: Prepare SQLite Database
+      run: |
+        mkdir -p database
+        touch database/database.sqlite
+        chmod -R 777 database
+
+    - name: Run Migrations
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: database/database.sqlite
+        APP_ENV: production
+      run: php artisan migrate --force
