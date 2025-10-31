@@ -86,12 +86,6 @@ jobs:
     - name: Install Dependencies
       run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
-    - name: Prepare SQLite Database
-      run: |
-        mkdir -p database
-        touch database/database.sqlite
-        chmod -R 777 database
-
     - name: Run Migrations
       env:
         DB_CONNECTION: sqlite
